@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+	  <meta charset="UTF-8" />
+	  <title>HK Guessr</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	  <link rel="stylesheet" href="game.css" />
+	</head>
+	<body>
+	  <div class="feature_image" id="place">
+		<img src="../../dirt.jpg">
+	  </div>
+	  <div class="top_ui">
+		<span class="text" id="Score">Score: 0</span>
+		<span class="text" id="Timer">TIMER</span>
+		<span class="text" id="round">Round : 0/5</span>
+	  </div>
+	  <div class="bot_ui">
+		<div class="map_ui">
+			<div class="zoom_outer">
+				<div id="tag" hidden>
+					<img src="../../assets/knight.png">
+				</div>
+				<div id="zoom">
+				<img src="../../assets/map.png" alt="zoom">
+				</div>
+			</div>
+		</div>
+		<div class="mybutton">
+			<div class="guessimgs">
+				<img src="../../assets/guessbtnl.png">
+				<img src="../../assets/guessbtn.png" class="img-top" id="btn">
+			</div>
+		</div>
+	</div>
+	<script src="game.js"></script>
+	</body>
+</html>
