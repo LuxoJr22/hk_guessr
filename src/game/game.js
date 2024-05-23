@@ -16,6 +16,7 @@ bot = document.getElementById("guess"),
 bott = document.getElementById("bot")
 map = document.getElementById("map"),
 act_score = document.getElementById("Act_score"),
+act_round = document.getElementById("Act_round"),
 zoom = document.getElementById("zoom"),
 locate = document.getElementById("point"),
 taupe = document.getElementById("top"),
@@ -62,17 +63,22 @@ function reloadmap()
 {
 	loadmap();
 	bot.style.right = 20 + "px";
+	bot.style.top = "";
 	bot.style.bottom = 80 + "px";
 	map.style.opacity = 0.5;
 	map.style.height = "auto";
 	map.style.width = 600 + "px";
-	get_rect();
+	tagpos.x = 0;
+	tagpos.y = 0;
+	tag.style.left = tagpos.x + "px";
+	tag.style.top = tagpos.y + "px";
+	setTransform()
+	tag.hidden = true;
 	tagpo.hidden = true;
-	if (tagpos.x == 0 && tagpos.y == 0)
-		tagpos = tagpoint;
 	taupe.style.display = "flex";
 	guess_imgs.style.display = "flex";
 	bott.style.display = "none";
+	get_rect();
 }
 
 function guess_scene()
@@ -148,6 +154,10 @@ function Timer_Tick() {
 
        	timer.innerHTML = "" + minutes + ":" + secondsTens + secondsOnes;
 	}
+	else
+	{
+		guess_scene();
+	}
 }
 
 
@@ -158,16 +168,19 @@ zoom.onmouseleave = function(e)
 
 button.onmousedown = function(e)
 {
+	let scoring
 	if (tagpos.x > pospoint.x - 5 && tagpos.x < pospoint.x + 5 && tagpos.y > pospoint.y - 5 && tagpos.y < pospoint.y + 5)
-		score += 1000;
+		scoring = 1000;
 	else
 	{
 		let dist = Math.sqrt((tagpos.x - pospoint.x) ** 2 + (tagpos.y - pospoint.y) ** 2) * 10;
 		if (dist > 1000)
 			dist = 1000;
-		score += Math.round(1000 - dist);
+		scoring = Math.round(1000 - dist);
 	}
-	act_score.innerHTML = "Score : " + score;
+	act_score.innerHTML = "Score : " + scoring;
+	act_round.innerHTML = "Round : " + Round + "/5";
+	score += scoring;
 	Round ++;
 	guess_scene();
 }
