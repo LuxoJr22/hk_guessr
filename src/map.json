@@ -1,0 +1,9 @@
+
+{
+	"maps" : [
+		{"link" : "../../assets/point/quirrel.png", "coords" : {"x" : 75, "y": 106}},
+		{"link" : "../../assets/point/dirt.jpg", "coords" : {"x" : 270, "y": 86}},
+		{"link" : "../../assets/point/map3.png", "coords" : {"x" : 54, "y": 104}},
+		{"link" : "../../assets/point/map4.png", "coords" : {"x" : 452, "y": 243}}
+	]
+}

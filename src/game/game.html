@@ -8,18 +8,21 @@
 	</head>
 	<body>
 	  <div class="feature_image" id="place">
-		<img src="../../dirt.jpg">
+		<img id="point">
 	  </div>
-	  <div class="top_ui">
+	  <div class="top_ui" id="top">
 		<span class="text" id="Score">Score: 0</span>
 		<span class="text" id="Timer">TIMER</span>
 		<span class="text" id="round">Round : 0/5</span>
 	  </div>
-	  <div class="bot_ui">
-		<div class="map_ui">
+	  <div class="guess_ui" id="guess">
+		<div class="map_ui" id ="map">
 			<div class="zoom_outer">
 				<div id="tag" hidden>
 					<img src="../../assets/knight.png">
+				</div>
+				<div id="tagpoint" hidden>
+					<img src="../../Wayward_Compass.webp">
 				</div>
 				<div id="zoom">
 				<img src="../../assets/map.png" alt="zoom">
@@ -27,12 +30,20 @@
 			</div>
 		</div>
 		<div class="mybutton">
-			<div class="guessimgs">
+			<div class="guessimgs" id="guess_text">
 				<img src="../../assets/guessbtnl.png">
 				<img src="../../assets/guessbtn.png" class="img-top" id="btn">
 			</div>
 		</div>
-	</div>
+	  </div>
+	  <div class="bot_ui" id="bot">
+		<span class="text" id="Act_score">Score: 0</span>
+		<div class="nextimgs" id="next_text">
+			<img src="../../assets/Nextl.png">
+			<img src="../../assets/Next.png" class="img-top" id="next">
+		</div>
+		<span class="text" id="Act_round">Round : 1/5</span>
+	  </div>
 	<script src="game.js"></script>
 	</body>
 </html>
