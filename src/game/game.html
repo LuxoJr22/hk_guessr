@@ -17,15 +17,18 @@
 	  </div>
 	  <div class="guess_ui" id="guess">
 		<div class="map_ui" id ="map">
-			<div class="zoom_outer">
+			<div class="zoom_outer" id="mapping">
 				<div id="tag" hidden>
 					<img src="../../assets/knight.png">
 				</div>
 				<div id="tagpoint" hidden>
 					<img src="../../Wayward_Compass.webp">
 				</div>
+				<svg height="100%" width="100%" id="box">
+					<line x1="0" y1="0" x2="400" y2="200" stroke-dasharray="4" id="line" />
+				</svg>
 				<div id="zoom">
-				<img src="../../assets/map.png" alt="zoom">
+					<img src="../../assets/map.png" alt="zoom">
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,13 @@ pospoint = {x:0, y:0},
 tagpoint = {x:0, y:0},
 score = 0,
 Round = 1,
+scene = 0,
+gamepoints = [],
+mappoints = [],
+maptags = [],
+tags = [],
+points = [],
+lines = [],
 totalsec,
 chrono,
 bot = document.getElementById("guess"),
@@ -29,6 +36,8 @@ scoretxt = document.getElementById("Score"),
 round = document.getElementById("round"),
 guess_imgs = document.getElementById("guess_text"),
 next = document.getElementById("next_text");
+line = document.getElementById("line"),
+box = document.getElementById("box"),
 rect = zoom.getBoundingClientRect();
 
 function get_rect()
@@ -45,6 +54,7 @@ function get_rect()
 
 function loadmap()
 {
+	scene = 0;
 	totalsec = 300;
 	clearInterval(chrono);
 	StartTimer();
@@ -52,7 +62,13 @@ function loadmap()
 		.then((response) => response.json())
 		.then((json) => {
 			var i = json.maps.length;
-			var p = json.maps[Math.floor(Math.random() * i)];
+			var o = Math.floor(Math.random() * i);
+			while (gamepoints.includes(o))
+			{
+				o = (o + 1) % i;
+			}
+			gamepoints.push(o);
+			var p = json.maps[o];
 			locate.src = p.link;
 			pospoint = p.coords});
 	scoretxt.innerHTML = "Score : " + score;
@@ -78,11 +94,13 @@ function reloadmap()
 	taupe.style.display = "flex";
 	guess_imgs.style.display = "flex";
 	bott.style.display = "none";
+	box.style.display = "none"
 	get_rect();
 }
 
 function guess_scene()
 {
+	scene = 1;
 	bot.style.right = 0 + "px";
 	bot.style.top = 0 + "px";
 	map.style.opacity = 1;
@@ -103,15 +121,50 @@ function guess_scene()
 	locate.src = "";
 	if (tagpos.x == 0 && tagpos.y == 0)
 		tagpos = tagpoint;
+	maptags.push({x: tagpos.x, y: tagpos.y});
+	mappoints.push({x: tagpoint.x, y: tagpoint.y});
 	let mid = {x: (tagpoint.x + tagpos.x) / 2, y: (tagpoint.y + tagpos.y) / 2};
 	pointX = (rect.right - rect.left) / 2 - mid.x;
 	pointY = (rect.bottom - rect.top) / 2 - mid.y - 225;
 	setTransform();
+	box.style.display = "block"
 	taupe.style.display = "none";
 	guess_imgs.style.display = "none";
 	bott.style.display = "flex";
+
 	clearInterval(chrono);
 	
+}
+
+function end_scene()
+{
+	scene = 2;
+	scale = 1;
+	pointX = 0;
+	pointY = 0;
+	let i = 0;
+	while (i < 4)
+	{
+		lines.push(line.cloneNode(true));
+		tags.push(tag.cloneNode(true));
+		tags[i].style.left = maptags[i].x + "px";
+		tags[i].style.top = maptags[i].y + "px";
+		document.getElementById("mapping").appendChild(tags[i]);
+		points.push(tagpo.cloneNode(true))
+		points[i].style.left = mappoints[i].x + "px";
+		points[i].style.top = mappoints[i].y + "px";
+		document.getElementById("mapping").appendChild(points[i]);
+		lines[i].setAttribute('x1', maptags[i].x);
+		
+		lines[i].setAttribute('y1', maptags[i].y);
+		lines[i].setAttribute('x2', mappoints[i].x);
+		lines[i].setAttribute('y2', mappoints[i].y);
+		document.getElementById("box").appendChild(lines[i]);
+		i ++;
+	}
+	setTransform();
+	act_score.innerHTML = "Score : " + score;
+
 }
 
 loadmap();
@@ -127,13 +180,33 @@ window.onresize = function(event) {
 function setTransform() {
 	zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
 	var p = {x: pointX + tagpos.x * (scale - 1), y: pointY + tagpos.y * (scale - 1)}
+	line.setAttribute('x1', tagpos.x + p.x);
+	line.setAttribute('y1', tagpos.y + p.y);
 	tag.style.transform = "translate(" + p.x + "px, " + p.y + "px)";
 	p = {x: pointX + tagpoint.x * (scale - 1), y: pointY + tagpoint.y * (scale - 1)}
 	tagpo.style.transform = "translate(" + p.x + "px, " + p.y + "px)";
+	line.setAttribute('x2', tagpoint.x + p.x);
+	line.setAttribute('y2', tagpoint.y + p.y);
+	if (scene == 2)
+	{
+		let i = 0;
+		while ( i < 4)
+		{
+			p = {x: pointX + maptags[i].x * (scale - 1), y: pointY + maptags[i].y * (scale - 1)};
+			tags[i].style.transform = "translate(" + p.x + "px, " + p.y + "px)";
+			lines[i].setAttribute('x1', maptags[i].x + p.x);
+			lines[i].setAttribute('y1', maptags[i].y + p.y);
+			p = {x: pointX + mappoints[i].x * (scale - 1), y: pointY + mappoints[i].y * (scale - 1)};
+			points[i].style.transform = "translate(" + p.x + "px, " + p.y + "px)";
+			lines[i].setAttribute('x2', mappoints[i].x + p.x);
+			lines[i].setAttribute('y2', mappoints[i].y + p.y);
+			i ++;
+		}
+	}
 }
 
 function StartTimer() {
-	totalSeconds = 300;	// Set to number of seconds left
+	totalSeconds = 300;
 
 	chrono = setInterval("Timer_Tick()", 1000);
 	var seconds = totalSeconds % 60;
@@ -182,6 +255,7 @@ button.onmousedown = function(e)
 	act_round.innerHTML = "Round : " + Round + "/5";
 	score += scoring;
 	Round ++;
+	console.log(tagpos);
 	guess_scene();
 }
 
@@ -200,7 +274,7 @@ zoom.onmouseup = function (e) {
 	pos.x = (e.clientX - rect.left);
 	pos.y = (e.clientY - rect.top);
 	
-	if (point.y == pos.y && point.x == pos.x)
+	if (point.y == pos.y && point.x == pos.x && scene == 0)
 	{
 		tag.hidden = false;
 		tagpos.x = (pos.x - pointX) / scale;
@@ -212,7 +286,11 @@ zoom.onmouseup = function (e) {
 }
 
 next.onmousedown = function (e) {
-	reloadmap();
+	if (Round < 6)
+		reloadmap();
+	else
+		end_scene();
+		
 }
 
 zoom.onmousemove = function (e) {

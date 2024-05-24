@@ -43,11 +43,22 @@ div#tag > img {
 }
 
 #tagpoint {
+	z-index: 3;
+	position: absolute;
+	pointer-events: none;
+	overflow: visible;	
+}
+
+#line {
+	stroke:white;
+	stroke-width:2;
+}
+
+#box {
 	z-index: 2;
 	position: absolute;
 	pointer-events: none;
-	overflow: visible;
-	
+	display: none;
 }
 
 div#tagpoint > img {
@@ -98,6 +109,7 @@ div#tagpoint > img {
 }
 .nextimgs:hover .img-top {
 	display: inline;
+	filter: drop-shadow(0 0 2px white)
 }
 
 div.nextimgs > img {
@@ -200,7 +212,7 @@ div#zoom > img {
 }
 
 .map_ui:hover {
-	opacity: 1.0;
+	opacity: 1.0 !important;
 	transform: scale(1.0);
 }
 /*.zoom_outer {

@@ -4,6 +4,12 @@
 		{"link" : "../../assets/point/quirrel.png", "coords" : {"x" : 75, "y": 106}},
 		{"link" : "../../assets/point/dirt.jpg", "coords" : {"x" : 270, "y": 86}},
 		{"link" : "../../assets/point/map3.png", "coords" : {"x" : 54, "y": 104}},
-		{"link" : "../../assets/point/map4.png", "coords" : {"x" : 452, "y": 243}}
+		{"link" : "../../assets/point/map4.png", "coords" : {"x" : 452, "y": 243}},
+		{"link" : "../../assets/point/map5.png", "coords" : {"x" : 560, "y": 184}},
+		{"link" : "../../assets/point/map6.png", "coords" : {"x" : 454, "y": 168}},
+		{"link" : "../../assets/point/map7.png", "coords" : {"x" : 448, "y": 58}},
+		{"link" : "../../assets/point/map8.png", "coords" : {"x" : 228, "y": 147}},
+		{"link" : "../../assets/point/map9.png", "coords" : {"x" : 168, "y": 277}},
+		{"link" : "../../assets/point/map10.png", "coords" : {"x" : 298, "y": 289}}
 	]
 }
