@@ -61,6 +61,10 @@ div#tag > img {
 	display: none;
 }
 
+#playa_text {
+	display: none;
+}
+
 div#tagpoint > img {
 	z-index: 20;
 	position: relative;

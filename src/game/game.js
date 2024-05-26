@@ -17,7 +17,7 @@ maptags = [],
 tags = [],
 points = [],
 lines = [],
-totalsec,
+totalsec = 0,
 chrono,
 bot = document.getElementById("guess"),
 bott = document.getElementById("bot")
@@ -35,7 +35,8 @@ button = document.getElementById("btn"),
 scoretxt = document.getElementById("Score"),
 round = document.getElementById("round"),
 guess_imgs = document.getElementById("guess_text"),
-next = document.getElementById("next_text");
+next = document.getElementById("next_text"),
+playa = document.getElementById("playa_text"),
 line = document.getElementById("line"),
 box = document.getElementById("box"),
 rect = zoom.getBoundingClientRect();
@@ -55,7 +56,6 @@ function get_rect()
 function loadmap()
 {
 	scene = 0;
-	totalsec = 300;
 	clearInterval(chrono);
 	StartTimer();
 	fetch('../map.json')
@@ -100,6 +100,7 @@ function reloadmap()
 
 function guess_scene()
 {
+	totalsec += 300 - totalSeconds;
 	scene = 1;
 	bot.style.right = 0 + "px";
 	bot.style.top = 0 + "px";
@@ -119,10 +120,13 @@ function guess_scene()
 	tagpo.style.top = tagpoint.y + "px";
 	tagpo.hidden = false;
 	locate.src = "";
-	if (tagpos.x == 0 && tagpos.y == 0)
-		tagpos = tagpoint;
 	maptags.push({x: tagpos.x, y: tagpos.y});
 	mappoints.push({x: tagpoint.x, y: tagpoint.y});
+	if (tagpos.x == 0 && tagpos.y == 0)
+	{
+		tagpos.x = tagpoint.x;
+		tagpos.y = tagpoint.y;
+	}
 	let mid = {x: (tagpoint.x + tagpos.x) / 2, y: (tagpoint.y + tagpos.y) / 2};
 	pointX = (rect.right - rect.left) / 2 - mid.x;
 	pointY = (rect.bottom - rect.top) / 2 - mid.y - 225;
@@ -131,7 +135,6 @@ function guess_scene()
 	taupe.style.display = "none";
 	guess_imgs.style.display = "none";
 	bott.style.display = "flex";
-
 	clearInterval(chrono);
 	
 }
@@ -143,6 +146,7 @@ function end_scene()
 	pointX = 0;
 	pointY = 0;
 	let i = 0;
+	console.log(maptags);
 	while (i < 4)
 	{
 		lines.push(line.cloneNode(true));
@@ -160,11 +164,24 @@ function end_scene()
 		lines[i].setAttribute('x2', mappoints[i].x);
 		lines[i].setAttribute('y2', mappoints[i].y);
 		document.getElementById("box").appendChild(lines[i]);
+		if (maptags[i].x == 0 && maptags[i].y == 0)
+		{
+			tags[i].hidden = true;
+			lines[i].style.display = "none";
+		}
+		else
+			tags[i].hidden = false;
 		i ++;
 	}
 	setTransform();
 	act_score.innerHTML = "Score : " + score;
-
+	let seconds = totalsec % 60;
+	let secondsTens = Math.floor(seconds / 10);
+	let secondsOnes = seconds % 10;
+	let minutes = Math.floor(totalsec / 60);
+	act_round.innerHTML = "" + minutes + ":" + secondsTens + secondsOnes;
+	next.style.display = "none";
+	playa.style.display = "inline-block";
 }
 
 loadmap();
@@ -209,10 +226,10 @@ function StartTimer() {
 	totalSeconds = 300;
 
 	chrono = setInterval("Timer_Tick()", 1000);
-	var seconds = totalSeconds % 60;
-	var secondsTens = Math.floor(seconds / 10);
-	var secondsOnes = seconds % 10;
-	var minutes = Math.floor(totalSeconds / 60);
+	let seconds = totalSeconds % 60;
+	let secondsTens = Math.floor(seconds / 10);
+	let secondsOnes = seconds % 10;
+	let minutes = Math.floor(totalSeconds / 60);
 	timer.innerHTML = "" + minutes + ":" + secondsTens + secondsOnes;
 }
 
@@ -220,10 +237,10 @@ function Timer_Tick() {
     if (totalSeconds > 0)
     {
         totalSeconds--;
-        var seconds = totalSeconds % 60;
-        var secondsTens = Math.floor(seconds / 10);
-        var secondsOnes = seconds % 10;
-        var minutes = Math.floor(totalSeconds / 60);
+        let seconds = totalSeconds % 60;
+        let secondsTens = Math.floor(seconds / 10);
+        let secondsOnes = seconds % 10;
+        let minutes = Math.floor(totalSeconds / 60);
 
        	timer.innerHTML = "" + minutes + ":" + secondsTens + secondsOnes;
 	}
@@ -283,6 +300,10 @@ zoom.onmouseup = function (e) {
 		tag.style.top = tagpos.y + "px";
 		setTransform();
 	}
+}
+
+playa.onmousedown = function (e) {
+	document.location.reload();
 }
 
 next.onmousedown = function (e) {
